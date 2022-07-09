@@ -12,14 +12,15 @@ class Book(models.Model):
     author = models.CharField(null=True, max_length=100)
     is_bestselling = models.BooleanField(default=False)
     # db_index makes searching the field faster id out of the box has index search
-    slug = models.SlugField(default="", null=False, db_index=True)
+    slug = models.SlugField(default="", null=False, blank=True, db_index=True)
 
     def get_absolute_url(self):
         return reverse("book-detail", args=[self.slug])
 
-    def save(self, *args, **kwargs):
-        self.slug = slugify(self.title)
-        super().save(*args, **kwargs)
+    # Don't need this with the admin stuff going on.
+    # def save(self, *args, **kwargs):
+    #     self.slug = slugify(self.title)
+    #     super().save(*args, **kwargs)
 
     # This is needed to print data to the console vs.
     def __str__(self):
